@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AgriMind · Pest Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="card">
+        <h2>Pest Detector</h2>
+        <p class="tagline">iNaturalist AI + Wikipedia · Free</p>
+
+        <label for="f" class="choose-btn" id="chooseBtn">
+            <i class="fas fa-camera"></i> Choose Photo
+        </label>
+        <input type="file" id="f" accept="image/*">
+
+        <img class="preview" id="pv" alt="Preview">
+        
+        <div class="spinner" id="spinner"></div>
+        
+        <button class="analyze-btn" id="btn" disabled>Analyze</button>
+        <div class="result" id="res"></div>
+        <div class="status" id="st">Ready · Online</div>
+    </div>
+    
+    <footer>
+        Developed by <strong>Wambulawae Daniel</strong> · 0573373146<br>
+        <a href="https://agri-mind.pages.dev" target="_blank">Visit AgriMind Platform</a>
+    </footer>
+</div>
+</body>
+</html>
