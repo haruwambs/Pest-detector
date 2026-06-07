@@ -1,4 +1,6 @@
-// Direct API endpoints – works perfectly when hosted on Cloudflare Pages (or any https origin)
+// ============================================
+// CONFIGURATION – Direct API (Cloudflare Pages)
+// ============================================
 var INAT_API = 'https://api.inaturalist.org/v1/computervision/score';
 var WIKI_API = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 
@@ -162,7 +164,7 @@ document.getElementById('btn').addEventListener('click',async function(){
     
     try{
         var base64 = await fileToBase64(selectedFile);
-        var response = await fetch(INAT_API,{
+        var response = await fetch(INAT_API, {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({image:base64})
@@ -236,8 +238,8 @@ document.getElementById('btn').addEventListener('click',async function(){
         console.error(e);
         res.innerHTML = '<div style="text-align:center;color:#ef4444;padding:15px;">'+
                         '<i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:8px;"></i>'+
-                        '<p>'+e.message+'</p>'+
-                        '<p style="font-size:0.7rem;color:#888;">Host this file on Cloudflare Pages (free) for full functionality.</p></div>';
+                        '<p>Error: '+e.message+'</p>'+
+                        '<p style="font-size:0.7rem;color:#888;">Check your internet connection</p></div>';
         res.style.display = 'block';
         st.textContent = 'Detection failed';
     }
