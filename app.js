@@ -1,11 +1,5 @@
-// ============================================
-// CONFIGURATION – multiple fallback CORS proxies
-// ============================================
-var CORS_PROXIES = [
-    'https://corsproxy.io/?',
-    'https://api.allorigins.win/raw?url='
-];
-var INAT_API_BASE = 'https://api.inaturalist.org/v1/computervision/score';
+// Direct API endpoints – works perfectly when hosted on Cloudflare Pages (or any https origin)
+var INAT_API = 'https://api.inaturalist.org/v1/computervision/score';
 var WIKI_API = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 
 var PEST_KEYWORDS = [
@@ -56,25 +50,6 @@ var ADVICE = {
 };
 
 var selectedFile = null;
-
-// ============================================
-// HELPER: try to fetch through each proxy
-// ============================================
-async function tryFetchWithProxy(url, options, proxyIndex) {
-    if (proxyIndex === undefined) proxyIndex = 0;
-    if (proxyIndex >= CORS_PROXIES.length) {
-        throw new Error('All CORS proxies failed. Try hosting this file on Cloudflare Pages (free).');
-    }
-    var proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(url);
-    try {
-        var response = await fetch(proxyUrl, options);
-        if (!response.ok) throw new Error('Proxy ' + (proxyIndex+1) + ' returned ' + response.status);
-        return response;
-    } catch(e) {
-        console.warn('Proxy ' + (proxyIndex+1) + ' failed, trying next...');
-        return tryFetchWithProxy(url, options, proxyIndex + 1);
-    }
-}
 
 // ============================================
 // EVENT LISTENERS
@@ -187,11 +162,13 @@ document.getElementById('btn').addEventListener('click',async function(){
     
     try{
         var base64 = await fileToBase64(selectedFile);
-        var response = await tryFetchWithProxy(INAT_API_BASE, {
+        var response = await fetch(INAT_API,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({image:base64})
         });
+        
+        if(!response.ok) throw new Error('API Error: '+response.status);
         
         var data = await response.json();
         var results = data.results||[];
@@ -257,14 +234,10 @@ document.getElementById('btn').addEventListener('click',async function(){
         
     }catch(e){
         console.error(e);
-        var errMsg = e.message;
-        if(errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError')){
-            errMsg = 'Cannot reach iNaturalist. Check your internet connection, or host the file on Cloudflare Pages (free).';
-        }
         res.innerHTML = '<div style="text-align:center;color:#ef4444;padding:15px;">'+
                         '<i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:8px;"></i>'+
-                        '<p>'+errMsg+'</p>'+
-                        '<p style="font-size:0.7rem;color:#888;">If this persists, deploy on Cloudflare Pages - it will work instantly.</p></div>';
+                        '<p>'+e.message+'</p>'+
+                        '<p style="font-size:0.7rem;color:#888;">Host this file on Cloudflare Pages (free) for full functionality.</p></div>';
         res.style.display = 'block';
         st.textContent = 'Detection failed';
     }
