@@ -2,37 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>AgriMind · Pest Detector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AgriMind · Pest Diagnosis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="main-wrapper">
     <div class="card">
-        <h2>Pest Detector</h2>
-        <p class="tagline">iNaturalist AI + Wikipedia · Free</p>
+        <h2>🌱 AgriMind Diagnosis</h2>
+        <p class="tagline">Describe symptoms → Wikipedia matches → Identify in field</p>
 
-        <label for="f" class="choose-btn" id="chooseBtn">
-            <i class="fas fa-camera"></i> Choose Photo
-        </label>
-        <input type="file" id="f" accept="image/*">
+        <!-- Step 1: Crop & Symptoms -->
+        <div class="step active" id="step1">
+            <label>🌾 Select Crop</label>
+            <select id="cropSelect">
+                <option value="">-- Choose crop --</option>
+                <option value="maize">Maize / Corn</option>
+                <option value="rice">Rice</option>
+                <option value="tomato">Tomato</option>
+                <option value="cassava">Cassava</option>
+                <option value="citrus">Citrus (Orange/Lemon)</option>
+                <option value="coffee">Coffee</option>
+                <option value="banana">Banana</option>
+                <option value="cotton">Cotton</option>
+                <option value="soybean">Soybean</option>
+                <option value="groundnut">Groundnut / Peanut</option>
+                <option value="potato">Potato</option>
+                <option value="mango">Mango</option>
+            </select>
 
-        <img class="preview" id="pv" alt="Preview">
-        
-        <div class="spinner" id="spinner"></div>
-        
-        <button class="analyze-btn" id="btn" disabled>Analyze</button>
-        <div class="result" id="res"></div>
-        <div class="status" id="st">Ready · Online</div>
+            <label>🔍 Where is damage visible?</label>
+            <select id="damageLocation">
+                <option value="">-- Select --</option>
+                <option value="leaves">Leaves</option>
+                <option value="stem">Stem / Stalk</option>
+                <option value="roots">Roots</option>
+                <option value="fruits">Fruits / Pods / Grains</option>
+                <option value="whole">Whole plant</option>
+            </select>
+
+            <label>🩺 What do you see?</label>
+            <select id="symptomType">
+                <option value="">-- Select --</option>
+                <option value="holes">Holes in leaves</option>
+                <option value="chewed">Chewed leaf edges</option>
+                <option value="yellowing">Yellowing / Wilting</option>
+                <option value="spots">Spots on leaves</option>
+                <option value="powder">White powder on leaves</option>
+                <option value="rust">Orange/brown rust spots</option>
+                <option value="tunnels">Tunnels in stem</option>
+                <option value="curling">Curled / twisted leaves</option>
+                <option value="sticky">Sticky substance on leaves</option>
+                <option value="rot">Rotting / soft tissue</option>
+                <option value="stunted">Stunted growth</option>
+                <option value="dead">Dead / dying plant</option>
+            </select>
+
+            <label>📝 Describe what you see (details help accuracy)</label>
+            <textarea id="extraDetails" placeholder="e.g., 'Small green caterpillars under leaves eating holes that appeared this week' or 'White powder spreading from bottom leaves upward after heavy rains'"></textarea>
+
+            <button onclick="diagnose()">🔍 Find Possible Pests & Diseases</button>
+            <div class="spinner" id="spinner"></div>
+            <p class="status" id="status"></p>
+        </div>
+
+        <!-- Step 2: Results -->
+        <div class="step" id="step2">
+            <div class="breadcrumb">
+                <span onclick="goToStep(1)">← Back to symptoms</span>
+            </div>
+            <p class="results-info">Compare these with what you see in your field. Tap <b>"✓ This matches"</b> when you find the correct pest.</p>
+            <div id="resultsContainer"></div>
+            <button class="secondary" onclick="goToStep(1)">🔄 Search Again</button>
+        </div>
+
+        <!-- Step 3: Confirmed Pest -->
+        <div class="step" id="step3">
+            <div class="breadcrumb">
+                <span onclick="goToStep(2)">← Back to results</span>
+            </div>
+            <div id="confirmedContainer"></div>
+            <button class="secondary" onclick="goToStep(1)">🔄 Diagnose Another</button>
+        </div>
+
+        <footer>
+            Developed by <strong>Wambulawae Daniel</strong><br>
+            <a href="https://agri-mind.pages.dev" target="_blank">agri-mind.pages.dev</a>
+        </footer>
     </div>
-    
-    <footer>
-        Developed by <strong>Wambulawae Daniel</strong> · 0573373146<br>
-        <a href="https://agri-mind.pages.dev" target="_blank">Visit AgriMind Platform</a>
-    </footer>
-</div>
+
+    <script src="script.js"></script>
 </body>
 </html>
