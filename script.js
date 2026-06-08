@@ -1,4 +1,12 @@
 // ============================================
+// CONFIGURATION
+// ============================================
+const CONFIG = {
+    maxRequests: 8,
+    cacheEnabled: true
+};
+
+// ============================================
 // PEST SEARCH TERMS FOR WIKIPEDIA API
 // ============================================
 const PEST_SEARCH = {
@@ -91,6 +99,139 @@ const PEST_SEARCH = {
         rot: ["Groundnut stem rot", "Sclerotium rolfsii"],
         yellowing: ["Groundnut rosette virus"],
         stunted: ["Root-knot nematode groundnut"]
+    },
+    wheat: {
+        holes: ["Wheat stem sawfly", "Cereal leaf beetle", "Wheat aphid"],
+        chewed: ["Armyworm wheat", "Cutworm wheat", "Grasshopper wheat"],
+        yellowing: ["Wheat streak mosaic virus", "Barley yellow dwarf virus", "Wheat yellow rust"],
+        spots: ["Septoria leaf blotch wheat", "Tan spot wheat", "Wheat leaf rust"],
+        rust: ["Wheat stem rust", "Puccinia graminis", "Stripe rust wheat", "Puccinia striiformis"],
+        powder: ["Wheat powdery mildew", "Blumeria graminis"],
+        rot: ["Wheat scab", "Fusarium head blight", "Common bunt wheat", "Wheat take-all"],
+        stunted: ["Wheat take-all disease", "Gaeumannomyces graminis", "Wheat soilborne mosaic"]
+    },
+    sorghum: {
+        holes: ["Sorghum stem borer", "Sorghum shoot fly", "Atherigona soccata"],
+        chewed: ["Sorghum armyworm", "Sorghum head caterpillar"],
+        yellowing: ["Sorghum aphid", "Melanaphis sacchari", "Sorghum yellow banding virus"],
+        spots: ["Sorghum leaf blight", "Exserohilum turcicum", "Sorghum anthracnose"],
+        rust: ["Sorghum rust", "Puccinia purpurea"],
+        rot: ["Sorghum grain mold", "Fusarium sorghum", "Sorghum charcoal rot"],
+        stunted: ["Sorghum downy mildew", "Sorghum mosaic virus", "Striga weed sorghum"]
+    },
+    sugarcane: {
+        holes: ["Sugarcane stem borer", "Diatraea saccharalis", "Sugarcane top borer"],
+        chewed: ["Sugarcane woolly aphid", "Sugarcane leafhopper"],
+        yellowing: ["Sugarcane yellow leaf virus", "Sugarcane mosaic virus", "Sugarcane chlorotic streak"],
+        spots: ["Sugarcane leaf spot", "Sugarcane rust", "Sugarcane eye spot"],
+        rust: ["Sugarcane rust", "Puccinia melanocephala", "Sugarcane orange rust"],
+        rot: ["Sugarcane red rot", "Colletotrichum falcatum", "Sugarcane pineapple disease"],
+        stunted: ["Sugarcane ratoon stunting", "Sugarcane grassy shoot", "Sugarcane white leaf"]
+    },
+    coconut: {
+        holes: ["Coconut leaf caterpillar", "Coconut rhinoceros beetle", "Oryctes rhinoceros"],
+        chewed: ["Coconut hispine beetle", "Brontispa longissima", "Coconut skipper"],
+        yellowing: ["Coconut lethal yellowing", "Coconut cadang-cadang viroid", "Coconut root wilt"],
+        spots: ["Coconut leaf spot", "Coconut gray leaf spot", "Pestalotiopsis palmarum"],
+        rot: ["Coconut bud rot", "Phytophthora palmivora", "Coconut stem bleeding"],
+        stunted: ["Coconut tinangaja disease", "Coconut foliar decay", "Lethal bole rot coconut"],
+        sticky: ["Coconut scale insect", "Aspidiotus destructor", "Coconut mealybug"]
+    },
+    tea: {
+        holes: ["Tea mosquito bug", "Helopeltis theivora", "Tea leaf roller"],
+        chewed: ["Tea looper caterpillar", "Biston suppressaria", "Tea tortrix"],
+        yellowing: ["Tea yellow tea thrips", "Scirtothrips dorsalis", "Tea aphid"],
+        spots: ["Tea leaf spot", "Tea blister blight", "Exobasidium vexans"],
+        rust: ["Tea rust", "Tea root rot disease"],
+        rot: ["Tea root rot", "Tea brown root rot", "Phellinus noxius"],
+        stunted: ["Tea red spider mite", "Oligonychus coffeae", "Tea nematode"],
+        powder: ["Tea powdery mildew"]
+    },
+    apple: {
+        holes: ["Apple codling moth", "Cydia pomonella", "Apple aphid"],
+        chewed: ["Apple sawfly", "Winter moth apple", "Apple leaf roller"],
+        yellowing: ["Apple chlorotic leaf spot virus", "Apple mosaic virus"],
+        spots: ["Apple scab", "Venturia inaequalis", "Apple leaf spot", "Marssonina apple blotch"],
+        rust: ["Apple cedar rust", "Gymnosporangium juniperi-virginianae", "Apple rust mite"],
+        powder: ["Apple powdery mildew", "Podosphaera leucotricha"],
+        rot: ["Apple bitter rot", "Apple black rot", "Apple brown rot", "Monilinia fructigena"],
+        stunted: ["Apple replant disease", "Apple root rot", "Phytophthora apple"],
+        curling: ["Apple leaf curling aphid", "Dysaphis devecta", "Rosy apple aphid"]
+    },
+    grape: {
+        holes: ["Grape berry moth", "Grape phylloxera", "Daktulosphaira vitifoliae"],
+        chewed: ["Grape leafhopper", "Japanese beetle grape", "Grape flea beetle"],
+        yellowing: ["Grape fanleaf virus", "Grape leafroll disease", "Grapevine yellow speckle"],
+        spots: ["Grape downy mildew", "Grape powdery mildew", "Grape black rot"],
+        rust: ["Grape rust", "Phakopsora grape"],
+        powder: ["Grape powdery mildew", "Uncinula necator", "Oidium grape"],
+        rot: ["Grape bunch rot", "Botrytis cinerea", "Grape sour rot", "Grape ripe rot"],
+        stunted: ["Grape root rot", "Armillaria grape", "Grape nematode"],
+        curling: ["Grape leafroll virus", "Grapevine fanleaf degeneration"]
+    },
+    strawberry: {
+        holes: ["Strawberry aphid", "Strawberry leaf beetle", "Strawberry blossom weevil"],
+        chewed: ["Strawberry root weevil", "Otiorhynchus ovatus", "Strawberry sawfly"],
+        yellowing: ["Strawberry mild yellow edge virus", "Strawberry mottle virus"],
+        spots: ["Strawberry leaf spot", "Strawberry angular leaf spot", "Strawberry leaf scorch"],
+        rot: ["Strawberry gray mold", "Botrytis fruit rot", "Strawberry black root rot", "Strawberry red stele"],
+        powder: ["Strawberry powdery mildew", "Sphaerotheca macularis"],
+        stunted: ["Strawberry nematode", "Aphelenchoides fragariae", "Strawberry crown rot"],
+        curling: ["Strawberry aphid curling", "Strawberry crinkle virus"],
+        sticky: ["Strawberry aphid honeydew", "Strawberry tarsonemid mite"]
+    },
+    sweet_potato: {
+        holes: ["Sweet potato weevil", "Cylas formicarius", "Sweet potato hornworm"],
+        chewed: ["Sweet potato looper", "Sweet potato leaf folder", "Sweet potato tortoise beetle"],
+        yellowing: ["Sweet potato virus disease", "Sweet potato chlorotic stunt virus", "Sweet potato feathery mottle virus"],
+        spots: ["Sweet potato leaf spot", "Sweet potato scab", "Elsinoe batatas"],
+        rot: ["Sweet potato black rot", "Ceratocystis fimbriata", "Sweet potato soft rot", "Rhizopus soft rot"],
+        stunted: ["Sweet potato stem rot", "Fusarium wilt sweet potato", "Root-knot nematode sweet potato"],
+        curling: ["Sweet potato leaf curl virus", "Sweet potato whitefly"]
+    },
+    oil_palm: {
+        holes: ["Oil palm bagworm", "Metisa plana", "Oil palm leaf miner"],
+        chewed: ["Oil palm nettle caterpillar", "Darna trima", "Oil palm slug caterpillar"],
+        yellowing: ["Oil palm bud rot", "Oil palm lethal yellowing"],
+        spots: ["Oil palm leaf spot", "Oil palm anthracnose"],
+        rot: ["Oil palm basal stem rot", "Ganoderma boninense", "Oil palm trunk rot"],
+        stunted: ["Oil palm crown disease", "Oil palm little leaf syndrome"],
+        sticky: ["Oil palm mealybug", "Oil palm scale insect"]
+    },
+    rubber: {
+        holes: ["Rubber leaf caterpillar", "Rubber leaf miner"],
+        yellowing: ["Rubber leaf blight", "Rubber yellow leaf disease"],
+        spots: ["Rubber leaf spot", "Colletotrichum rubber", "Rubber powdery mildew"],
+        rot: ["Rubber white root disease", "Rigidoporus microporus", "Rubber brown root disease"],
+        stunted: ["Rubber red root disease", "Rubber nematode"]
+    },
+    tobacco: {
+        holes: ["Tobacco budworm", "Heliothis virescens", "Tobacco hornworm", "Manduca sexta"],
+        chewed: ["Tobacco cutworm", "Spodoptera litura", "Tobacco flea beetle"],
+        yellowing: ["Tobacco mosaic virus", "Tobacco etch virus", "Tobacco vein mottling virus"],
+        spots: ["Tobacco leaf spot", "Tobacco brown spot", "Alternaria tobacco"],
+        rot: ["Tobacco black shank", "Phytophthora nicotianae", "Tobacco root rot"],
+        stunted: ["Tobacco rattle virus", "Root-knot nematode tobacco", "Tobacco stunt"],
+        curling: ["Tobacco leaf curl virus", "Tobacco aphid curling"]
+    },
+    peach: {
+        holes: ["Peach fruit fly", "Bactrocera zonata", "Peach twig borer"],
+        chewed: ["Peach aphid", "Myzus persicae", "Peach tree borer"],
+        yellowing: ["Peach leaf curl", "Peach yellows phytoplasma", "Peach mosaic virus"],
+        spots: ["Peach leaf spot", "Peach scab", "Cladosporium carpophilum"],
+        rot: ["Peach brown rot", "Monilinia fructicola", "Peach root rot"],
+        powder: ["Peach powdery mildew", "Sphaerotheca pannosa"],
+        stunted: ["Peach root-knot nematode", "Peach replant disease", "Armillaria root rot peach"],
+        curling: ["Peach leaf curl", "Taphrina deformans", "Peach silver leaf"]
+    },
+    pear: {
+        holes: ["Pear codling moth", "Pear psylla", "Cacopsylla pyricola"],
+        chewed: ["Pear slug sawfly", "Pear leaf roller", "Pear aphid"],
+        yellowing: ["Pear decline phytoplasma", "Pear stony pit virus"],
+        spots: ["Pear scab", "Venturia pirina", "Pear leaf spot", "Fabraea leaf spot"],
+        rust: ["Pear rust", "Gymnosporangium sabinae", "Pear trellis rust"],
+        rot: ["Pear fire blight", "Erwinia amylovora", "Pear brown rot"],
+        stunted: ["Pear root rot", "Phytophthora pear", "Pear nematode"]
     }
 };
 
@@ -112,7 +253,21 @@ const GENERIC_PESTS = {
     blight: "Blight plant disease",
     wilt: "Wilt disease plant",
     mosaic: "Mosaic virus plant",
-    smut: "Smut fungus plant disease"
+    smut: "Smut fungus plant disease",
+    cutworm: "Cutworm Noctuidae pest agriculture",
+    bollworm: "Bollworm Helicoverpa pest cotton maize",
+    fruit_fly: "Fruit fly Tephritidae pest agriculture",
+    scale_insect: "Scale insect Coccoidea pest plant",
+    leafhopper: "Leafhopper Cicadellidae pest agriculture",
+    stink_bug: "Stink bug Pentatomidae pest agriculture",
+    termite: "Termite Isoptera pest agriculture crop",
+    bacterial_wilt: "Bacterial wilt Ralstonia plant disease",
+    leaf_curl: "Leaf curl virus plant disease",
+    root_rot: "Root rot Phytophthora plant disease",
+    damping_off: "Damping off Pythium plant disease",
+    downy_mildew: "Downy mildew plant disease",
+    chlorosis: "Chlorosis plant nutrient deficiency",
+    canker: "Canker plant disease bacterial fungal"
 };
 
 // ============================================
@@ -307,16 +462,16 @@ function goToStep(step) {
 // WIKIPEDIA API CALL
 // ============================================
 async function searchWikipedia(query) {
-    if (wikiCache[query]) return wikiCache[query];
+    if (CONFIG.cacheEnabled && wikiCache[query]) return wikiCache[query];
 
     try {
         const response = await fetch(
             `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`
         );
         if (!response.ok) return null;
-        
+
         const data = await response.json();
-        
+
         let imageUrl = '';
         if (data.thumbnail && data.thumbnail.source) {
             imageUrl = data.thumbnail.source;
@@ -331,10 +486,11 @@ async function searchWikipedia(query) {
             url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`
         };
 
-        wikiCache[query] = result;
+        if (CONFIG.cacheEnabled) wikiCache[query] = result;
         return result;
+
     } catch (error) {
-        console.error('Wikipedia API error:', error);
+        console.error('Wikipedia API error:', error.message);
         return null;
     }
 }
@@ -344,13 +500,11 @@ async function searchWikipedia(query) {
 // ============================================
 function getAdvice(pestName) {
     const lowerName = pestName.toLowerCase();
-    
+
     for (const key in IPM_ADVICE) {
-        if (lowerName.includes(key)) {
-            return IPM_ADVICE[key];
-        }
+        if (lowerName.includes(key)) return IPM_ADVICE[key];
     }
-    
+
     return {
         advice: "Monitor your crop regularly. Consult your local agricultural extension officer for specific management recommendations.",
         control: {
@@ -380,61 +534,45 @@ async function diagnose() {
 
     let searchTerms = [];
 
-    // Get crop-specific pests
     if (PEST_SEARCH[crop] && PEST_SEARCH[crop][symptom]) {
         searchTerms = searchTerms.concat(PEST_SEARCH[crop][symptom]);
     }
 
-    // Add generic pests based on description keywords
-    if (details.includes('aphid') || details.includes('small green') || details.includes('tiny bugs') || details.includes('sap')) {
-        searchTerms.push(GENERIC_PESTS.aphid);
-    }
-    if (details.includes('caterpillar') || details.includes('worm') || details.includes('larva') || details.includes('larvae')) {
-        searchTerms.push(GENERIC_PESTS.caterpillar);
-    }
-    if (details.includes('white fly') || details.includes('whitefly') || details.includes('tiny white flying')) {
-        searchTerms.push(GENERIC_PESTS.whitefly);
-    }
-    if (details.includes('mite') || details.includes('web') || details.includes('spider') || details.includes('tiny red')) {
-        searchTerms.push(GENERIC_PESTS.mite);
-    }
-    if (details.includes('mealy') || details.includes('cotton') || details.includes('white fluffy')) {
-        searchTerms.push(GENERIC_PESTS.mealybug);
-    }
-    if (details.includes('thrip') || details.includes('silver') || details.includes('tiny black')) {
-        searchTerms.push(GENERIC_PESTS.thrips);
-    }
-    if (details.includes('powder') || details.includes('white coating') || symptom === 'powder') {
-        searchTerms.push(GENERIC_PESTS.powdery_mildew);
-    }
-    if (details.includes('rust') || details.includes('orange powder') || details.includes('brown powder') || symptom === 'rust') {
-        searchTerms.push(GENERIC_PESTS.rust);
-    }
-    if (details.includes('blight') || details.includes('spots') || details.includes('lesions') || symptom === 'spots') {
-        searchTerms.push(GENERIC_PESTS.blight);
-    }
-    if (details.includes('wilt') || details.includes('droop') || symptom === 'stunted' || symptom === 'yellowing') {
-        searchTerms.push(GENERIC_PESTS.wilt);
-    }
-    if (details.includes('mosaic') || details.includes('mottle') || details.includes('pattern')) {
-        searchTerms.push(GENERIC_PESTS.mosaic);
-    }
-    if (details.includes('smut') || details.includes('black powder') || details.includes('swollen')) {
-        searchTerms.push(GENERIC_PESTS.smut);
-    }
-    if (details.includes('nematode') || details.includes('root knot') || details.includes('galls on roots')) {
-        searchTerms.push(GENERIC_PESTS.nematode);
-    }
-    if (details.includes('locust') || details.includes('swarm') || details.includes('grasshopper')) {
-        searchTerms.push(GENERIC_PESTS.locust);
-    }
+    if (details.includes('aphid') || details.includes('small green') || details.includes('tiny bugs') || details.includes('sap')) searchTerms.push(GENERIC_PESTS.aphid);
+    if (details.includes('caterpillar') || details.includes('worm') || details.includes('larva') || details.includes('larvae')) searchTerms.push(GENERIC_PESTS.caterpillar);
+    if (details.includes('white fly') || details.includes('whitefly') || details.includes('tiny white flying')) searchTerms.push(GENERIC_PESTS.whitefly);
+    if (details.includes('mite') || details.includes('web') || details.includes('spider') || details.includes('tiny red')) searchTerms.push(GENERIC_PESTS.mite);
+    if (details.includes('mealy') || details.includes('cotton') || details.includes('white fluffy')) searchTerms.push(GENERIC_PESTS.mealybug);
+    if (details.includes('thrip') || details.includes('silver') || details.includes('tiny black')) searchTerms.push(GENERIC_PESTS.thrips);
+    if (details.includes('powder') || details.includes('white coating') || symptom === 'powder') searchTerms.push(GENERIC_PESTS.powdery_mildew);
+    if (details.includes('rust') || details.includes('orange powder') || details.includes('brown powder') || symptom === 'rust') searchTerms.push(GENERIC_PESTS.rust);
+    if (details.includes('blight') || details.includes('spots') || details.includes('lesions') || symptom === 'spots') searchTerms.push(GENERIC_PESTS.blight);
+    if (details.includes('wilt') || details.includes('droop') || symptom === 'stunted' || symptom === 'yellowing') searchTerms.push(GENERIC_PESTS.wilt);
+    if (details.includes('mosaic') || details.includes('mottle') || details.includes('pattern')) searchTerms.push(GENERIC_PESTS.mosaic);
+    if (details.includes('smut') || details.includes('black powder') || details.includes('swollen')) searchTerms.push(GENERIC_PESTS.smut);
+    if (details.includes('nematode') || details.includes('root knot') || details.includes('galls on roots')) searchTerms.push(GENERIC_PESTS.nematode);
+    if (details.includes('locust') || details.includes('swarm') || details.includes('grasshopper')) searchTerms.push(GENERIC_PESTS.locust);
+    if (details.includes('cutworm') || details.includes('cut worm') || details.includes('seedling cut')) searchTerms.push(GENERIC_PESTS.cutworm);
+    if (details.includes('bollworm') || details.includes('boll worm') || details.includes('cotton boll')) searchTerms.push(GENERIC_PESTS.bollworm);
+    if (details.includes('fruit fly') || details.includes('fruitfly') || details.includes('maggot in fruit')) searchTerms.push(GENERIC_PESTS.fruit_fly);
+    if (details.includes('scale') || details.includes('scaly') || details.includes('bumps on stem')) searchTerms.push(GENERIC_PESTS.scale_insect);
+    if (details.includes('leafhopper') || details.includes('leaf hopper') || details.includes('jumping bug')) searchTerms.push(GENERIC_PESTS.leafhopper);
+    if (details.includes('stink bug') || details.includes('stinkbug') || details.includes('shield bug') || details.includes('smelly bug')) searchTerms.push(GENERIC_PESTS.stink_bug);
+    if (details.includes('termite') || details.includes('termites') || details.includes('white ant')) searchTerms.push(GENERIC_PESTS.termite);
+    if (details.includes('bacterial wilt') || details.includes('bacteria') || details.includes('ooze')) searchTerms.push(GENERIC_PESTS.bacterial_wilt);
+    if (details.includes('leaf curl') || details.includes('leafcurl') || details.includes('curled leaves')) searchTerms.push(GENERIC_PESTS.leaf_curl);
+    if (details.includes('root rot') || details.includes('rootrot') || details.includes('roots rotting')) searchTerms.push(GENERIC_PESTS.root_rot);
+    if (details.includes('damping off') || details.includes('seedling death') || details.includes('seedlings dying')) searchTerms.push(GENERIC_PESTS.damping_off);
+    if (details.includes('downy mildew') || details.includes('downy') || details.includes('fluffy underside')) searchTerms.push(GENERIC_PESTS.downy_mildew);
+    if (details.includes('yellow leaves') || details.includes('chlorosis') || details.includes('pale green')) searchTerms.push(GENERIC_PESTS.chlorosis);
+    if (details.includes('canker') || details.includes('sore') || details.includes('lesion on stem') || details.includes('sunken')) searchTerms.push(GENERIC_PESTS.canker);
 
-    // Remove duplicates
     searchTerms = [...new Set(searchTerms)];
 
-    // Search Wikipedia for each term
     allResults = [];
-    for (const term of searchTerms.slice(0, 8)) {
+    const limitedTerms = searchTerms.slice(0, CONFIG.maxRequests);
+
+    for (const term of limitedTerms) {
         const wikiResult = await searchWikipedia(term);
         if (wikiResult && wikiResult.extract && wikiResult.extract.length > 50) {
             const advice = getAdvice(wikiResult.title);
@@ -448,14 +586,14 @@ async function diagnose() {
     if (allResults.length === 0) {
         allResults = [{
             title: 'No matching pests found',
-            extract: 'No specific pest or disease matched your symptoms in the Wikipedia database. Try describing what you see with different words, or add more details about the appearance of the damage, insects present, and when you first noticed the problem.',
+            extract: 'No specific pest or disease matched your symptoms. Possible reasons: the combination of symptoms may not correspond to a documented pest, your description may need more detail, or the damage may be caused by nutrient deficiency, water stress, or environmental factors rather than pests. Try describing with different words or consult your local agricultural extension officer.',
             image: '',
             url: '',
-            advice: 'Contact your local agricultural extension officer for field diagnosis and specific recommendations.',
+            advice: 'Contact your local agricultural extension officer for field diagnosis. When you meet the officer, describe: the crop type, detailed symptoms, when symptoms first appeared, and the pattern of damage across your field.',
             control: {
-                biological: 'Consult extension officer',
-                cultural: 'Consult extension officer',
-                chemical: 'Consult extension officer'
+                biological: 'Consult extension officer for diagnosis first',
+                cultural: 'Consult extension officer for diagnosis first',
+                chemical: 'Do not apply chemicals without confirmed diagnosis'
             }
         }];
     }
@@ -494,14 +632,12 @@ function displayResults() {
 function confirmPest(index) {
     const pest = allResults[index];
 
-    // Update button state
     const button = document.getElementById('matchBtn' + index);
     if (button) {
         button.textContent = '✅ Matched!';
         button.classList.add('matched');
     }
 
-    // Build confirmed pest view
     const container = document.getElementById('confirmedContainer');
     container.innerHTML = `
         <div class="result-card">
