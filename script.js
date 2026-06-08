@@ -1,13 +1,4 @@
 // ============================================
-// CONFIGURATION
-// ============================================
-const CONFIG = {
-    userAgent: 'AgriMind/1.0 (https://agri-mind.pages.dev; pest-diagnosis-tool; Zambia)',
-    maxRequests: 6,
-    cacheEnabled: true
-};
-
-// ============================================
 // PEST SEARCH TERMS FOR WIKIPEDIA API
 // ============================================
 const PEST_SEARCH = {
@@ -313,31 +304,19 @@ function goToStep(step) {
 }
 
 // ============================================
-// WIKIPEDIA API CALL WITH USER-AGENT
+// WIKIPEDIA API CALL
 // ============================================
 async function searchWikipedia(query) {
-    if (CONFIG.cacheEnabled && wikiCache[query]) {
-        return wikiCache[query];
-    }
+    if (wikiCache[query]) return wikiCache[query];
 
     try {
         const response = await fetch(
-            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`,
-            {
-                headers: {
-                    'User-Agent': CONFIG.userAgent,
-                    'Accept': 'application/json'
-                }
-            }
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`
         );
-
-        if (!response.ok) {
-            console.warn(`Wikipedia API returned ${response.status} for: ${query}`);
-            return null;
-        }
-
+        if (!response.ok) return null;
+        
         const data = await response.json();
-
+        
         let imageUrl = '';
         if (data.thumbnail && data.thumbnail.source) {
             imageUrl = data.thumbnail.source;
@@ -352,14 +331,10 @@ async function searchWikipedia(query) {
             url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`
         };
 
-        if (CONFIG.cacheEnabled) {
-            wikiCache[query] = result;
-        }
-
+        wikiCache[query] = result;
         return result;
-
     } catch (error) {
-        console.error('Wikipedia API error:', error.message);
+        console.error('Wikipedia API error:', error);
         return null;
     }
 }
@@ -369,13 +344,13 @@ async function searchWikipedia(query) {
 // ============================================
 function getAdvice(pestName) {
     const lowerName = pestName.toLowerCase();
-
+    
     for (const key in IPM_ADVICE) {
         if (lowerName.includes(key)) {
             return IPM_ADVICE[key];
         }
     }
-
+    
     return {
         advice: "Monitor your crop regularly. Consult your local agricultural extension officer for specific management recommendations.",
         control: {
@@ -405,10 +380,12 @@ async function diagnose() {
 
     let searchTerms = [];
 
+    // Get crop-specific pests
     if (PEST_SEARCH[crop] && PEST_SEARCH[crop][symptom]) {
         searchTerms = searchTerms.concat(PEST_SEARCH[crop][symptom]);
     }
 
+    // Add generic pests based on description keywords
     if (details.includes('aphid') || details.includes('small green') || details.includes('tiny bugs') || details.includes('sap')) {
         searchTerms.push(GENERIC_PESTS.aphid);
     }
@@ -452,12 +429,12 @@ async function diagnose() {
         searchTerms.push(GENERIC_PESTS.locust);
     }
 
+    // Remove duplicates
     searchTerms = [...new Set(searchTerms)];
 
+    // Search Wikipedia for each term
     allResults = [];
-    const limitedTerms = searchTerms.slice(0, CONFIG.maxRequests);
-    
-    for (const term of limitedTerms) {
+    for (const term of searchTerms.slice(0, 8)) {
         const wikiResult = await searchWikipedia(term);
         if (wikiResult && wikiResult.extract && wikiResult.extract.length > 50) {
             const advice = getAdvice(wikiResult.title);
@@ -517,12 +494,14 @@ function displayResults() {
 function confirmPest(index) {
     const pest = allResults[index];
 
+    // Update button state
     const button = document.getElementById('matchBtn' + index);
     if (button) {
         button.textContent = '✅ Matched!';
         button.classList.add('matched');
     }
 
+    // Build confirmed pest view
     const container = document.getElementById('confirmedContainer');
     container.innerHTML = `
         <div class="result-card">
